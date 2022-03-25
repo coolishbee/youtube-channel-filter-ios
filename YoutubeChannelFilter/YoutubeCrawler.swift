@@ -14,8 +14,8 @@ final class YoutubeCrawler {
     private init() {}
     static let shared = YoutubeCrawler()
 
-    func fetchYoutubeReviews() {
-        let searchQuery = "주라벨"
+    func fetchYoutubeReviews(query: String, completion: @escaping ([String?]) -> Void) {
+        let searchQuery = query.split(separator: " ").joined(separator: "+")
 
         guard let encodedString = (baseURL + searchQuery)
                 .addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
@@ -50,7 +50,7 @@ final class YoutubeCrawler {
                         }
                     }
                     //print(videoIds)
-                    //completion(videoIds)
+                    completion(videoIds)
                 }
             } catch {
 
