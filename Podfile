@@ -6,5 +6,5 @@ target 'YoutubeChannelFilter' do
 	pod 'Alamofire', '~> 5.5'
 	pod 'SwiftSoup', '~> 2.0.0'
 	pod 'RealmSwift'
-	pod 'Kingfisher', '~> 7.0'
+  pod 'SDWebImage', '~> 4.0'
 end

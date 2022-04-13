@@ -8,12 +8,13 @@
 import UIKit
 import Alamofire
 import SwiftSoup
+import SDWebImage
 
 class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate{
 
     @IBOutlet weak var table: UITableView!
     
-    private var youtubeResults = [YoutubeVideosResult]()
+    private var youtubeResults = [Int: YoutubeVideosResult]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,7 +22,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         let image = UIImage(named: "Logo")
         self.navigationItem.titleView = UIImageView(image: image)        
         
-        print("view load")
+        //print("view load")
         YoutubeCrawler.shared.fetchYoutubeReviews(query: "주라벨",
                                                   completion: youtubeVideoIdFetchCompletion(videoIds:))
         
@@ -32,20 +33,22 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        print("tableView load")
+                
+        //print("tableView " + String(indexPath.row))
         let cell = Bundle.main.loadNibNamed("VideoTableCell", owner: self, options: nil)?.first as! VideoTableCell
 
-//        let map = youtubeResults.map { $0 }
-//        let compactmap = youtubeResults.compactMap { $0 }
-//        print(map)
-//        print(compactmap)
-        cell.title.text = "20년차 예비역의 안산길 무장구보 (20kg)"
-        cell.channel.text = "soonki Hong"
+        print(self.youtubeResults[indexPath.row]?.items[0].snippet.channelTitle ?? "")
+        print(self.youtubeResults[indexPath.row]?.items[0].snippet.title ?? "")
+        
+        cell.title.text = self.youtubeResults[indexPath.row]?.items[0].snippet.title ?? ""
+        cell.channel.text = self.youtubeResults[indexPath.row]?.items[0].snippet.channelTitle ?? ""
         cell.date.text = "1개월 전"
         cell.duration.text = "3:07"
         
-        cell.videoImg.image = #imageLiteral(resourceName: "4")
+        let img = self.youtubeResults[indexPath.row]?.items[0].snippet.thumbnails.high.url
+        
+        cell.videoImg.sd_setImage(with: URL(string: img ?? ""), placeholderImage: #imageLiteral(resourceName: "placeholder"))
+        
         cell.type.image = #imageLiteral(resourceName: "movie") //Meaning Solo Video or Movie
         
         return cell
@@ -70,12 +73,13 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
                 guard let self = self else { return }
                 do {
                     let result = try JSONDecoder().decode(YoutubeVideosResult.self, from: response.data!)
-                    self.youtubeResults.append(result)
+                    self.youtubeResults[index] = result
+                    //print("index "+String(index))
                 } catch {
 
                 }
                 if index == videoIdsWithoutNil.count - 1 {
-                    print("load complete")
+                    //print("load complete")
                     self.table.reloadData()
                 }
             }

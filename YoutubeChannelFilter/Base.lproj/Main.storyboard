@@ -57,7 +57,6 @@
                             <barButtonItem image="user" id="sdD-es-5bs" userLabel="UserBarBtn"/>
                             <barButtonItem image="search" id="WKP-nK-ckT" userLabel="SearchBarBtn"/>
                             <barButtonItem title="CastBarBtn" image="airplayvideo" catalog="system" id="wCw-Lx-8Px"/>
-                            <barButtonItem image="bell" catalog="system" id="Wys-jH-NqO" userLabel="NotiBarBtn"/>
                         </rightBarButtonItems>
                     </navigationItem>
                     <connections>
@@ -91,7 +90,6 @@
     </scenes>
     <resources>
         <image name="airplayvideo" catalog="system" width="128" height="98"/>
-        <image name="bell" catalog="system" width="128" height="124"/>
         <image name="house" width="16" height="14"/>
         <image name="search" width="13" height="13"/>
         <image name="user" width="25" height="25"/>

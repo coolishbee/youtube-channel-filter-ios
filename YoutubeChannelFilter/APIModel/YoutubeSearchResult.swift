@@ -21,6 +21,7 @@ struct YoutubeSearchResult: Decodable {
 
     struct Snippet: Decodable {
         let title: String
+        let publishedAt: String
         let description: String
         let channelTitle: String
         let thumbnails: YoutubeSearchResult.Thumbnails
