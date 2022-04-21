@@ -22,8 +22,11 @@ final class YoutubeAPIClient {
     }
     private init() {}
     static let shared = YoutubeAPIClient()
-
-    func fetchYoutubeVideos(query: String, count: Int = 15, completion: @escaping (DataResponse<YoutubeSearchResult, AFError>) -> Void) {
+    
+    func search(query: String,
+                count: Int = 15,
+                completion: @escaping (DataResponse<YoutubeSearchResult, AFError>) -> Void)
+    {
         var parameters: [String: String] = [:]
 
         parameters.updateValue(apiKey, forKey: "key")
@@ -35,7 +38,9 @@ final class YoutubeAPIClient {
             .responseDecodable(completionHandler: completion)
     }
 
-    func fetchYoutubeVideoById(videoId: String, completion: @escaping (DataResponse<YoutubeVideosResult, AFError>) -> Void) {
+    func videos(videoId: String,
+                completion: @escaping (DataResponse<YoutubeVideosResult, AFError>) -> Void)
+    {
         var parameters: [String: String] = [:]
 
         parameters.updateValue(apiKey, forKey: "key")

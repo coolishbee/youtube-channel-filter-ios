@@ -13,41 +13,34 @@ import SDWebImage
 class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate{
 
     @IBOutlet weak var table: UITableView!
-    
-    private var youtubeResults = [Int: YoutubeVideosResult]()
+        
+    var videoArray = [VideoData]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         let image = UIImage(named: "Logo")
-        self.navigationItem.titleView = UIImageView(image: image)        
+        self.navigationItem.titleView = UIImageView(image: image)
         
-        //print("view load")
-        YoutubeCrawler.shared.fetchYoutubeReviews(query: "주라벨",
-                                                  completion: youtubeVideoIdFetchCompletion(videoIds:))
-        
+        getYoutubeAPIData(query: "예린몸매") { [weak self] (data: [VideoData]) in
+            self?.refreshTableData(newVids: data)
+        }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return youtubeResults.count
+        return videoArray.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-                
         //print("tableView " + String(indexPath.row))
         let cell = Bundle.main.loadNibNamed("VideoTableCell", owner: self, options: nil)?.first as! VideoTableCell
-
-        print(self.youtubeResults[indexPath.row]?.items[0].snippet.channelTitle ?? "")
-        print(self.youtubeResults[indexPath.row]?.items[0].snippet.title ?? "")
+        cell.title.text = self.videoArray[indexPath.row].title
+        cell.title.sizeToFit()
+        cell.channel.text = self.videoArray[indexPath.row].channel
+        cell.date.text = self.videoArray[indexPath.row].date
+        let img = self.videoArray[indexPath.row].videoImg
+        cell.videoImg.sd_setImage(with: URL(string: img), placeholderImage: #imageLiteral(resourceName: "placeholder"))
         
-        cell.title.text = self.youtubeResults[indexPath.row]?.items[0].snippet.title ?? ""
-        cell.channel.text = self.youtubeResults[indexPath.row]?.items[0].snippet.channelTitle ?? ""
-        cell.date.text = "1개월 전"
-        cell.duration.text = "3:07"
-        
-        let img = self.youtubeResults[indexPath.row]?.items[0].snippet.thumbnails.high.url
-        
-        cell.videoImg.sd_setImage(with: URL(string: img ?? ""), placeholderImage: #imageLiteral(resourceName: "placeholder"))
         
         cell.type.image = #imageLiteral(resourceName: "movie") //Meaning Solo Video or Movie
         
@@ -63,27 +56,48 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         print("User Selected: ", String(index))
     }
     
-    
-    private func youtubeVideoIdFetchCompletion(videoIds: [String?]) {
-        let videoIdsWithoutNil = videoIds.compactMap { $0 }
-
-        videoIdsWithoutNil.enumerated().forEach { index, videoId in
-            YoutubeAPIClient.shared.fetchYoutubeVideoById(videoId: videoId) { [weak self]
-                (response: DataResponse<YoutubeVideosResult, AFError>) in
-                guard let self = self else { return }
-                do {
-                    let result = try JSONDecoder().decode(YoutubeVideosResult.self, from: response.data!)
-                    self.youtubeResults[index] = result
-                    //print("index "+String(index))
-                } catch {
-
+    private func getYoutubeAPIData(query: String,
+                                   completion: @escaping ((_ data: [VideoData]) -> Void)
+    ) {
+        var videos = [VideoData]()
+        
+        YoutubeAPIClient.shared.search(query: "예린몸매") {
+            (res: DataResponse<YoutubeSearchResult, AFError>) in
+            
+            do{
+                let result = try JSONDecoder().decode(YoutubeSearchResult.self, from: res.data!)
+                
+                for item in result.items {
+                    //print(item)
+                    let videoData : VideoData = VideoData()
+                    videoData.id = item.id.videoId
+                    videoData.title = item.snippet.title
+                    videoData.channel = item.snippet.channelTitle
+                    videoData.date = self.parseDate(date: item.snippet.publishedAt)
+                    videoData.videoImg = item.snippet.thumbnails.high.url
+                    
+                    videos.append(videoData)
                 }
-                if index == videoIdsWithoutNil.count - 1 {
-                    //print("load complete")
-                    self.table.reloadData()
-                }
+                completion(videos)
+            }catch{
+                print("parsing error!!")
             }
         }
+    }
+    
+    func refreshTableData(newVids: [VideoData])
+    {
+        self.videoArray = newVids
+        print("Updating Videos, First title: ")
+        print(self.videoArray.count)
+        self.table.reloadData()
+    }
+    
+    func parseDate(date: String) -> String
+    {
+        let indexT = date.firstIndex(of: "T")
+        let shortDate = String(date[...date.index(before: indexT!)])
+        return "Uploaded on: "+shortDate
     }
 }
 
