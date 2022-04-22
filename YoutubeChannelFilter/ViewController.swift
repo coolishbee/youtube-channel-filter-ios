@@ -7,7 +7,6 @@
 
 import UIKit
 import Alamofire
-import SwiftSoup
 import SDWebImage
 
 class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate{

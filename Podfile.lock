@@ -8,13 +8,11 @@ PODS:
   - SDWebImage (4.4.8):
     - SDWebImage/Core (= 4.4.8)
   - SDWebImage/Core (4.4.8)
-  - SwiftSoup (2.0.0)
 
 DEPENDENCIES:
   - Alamofire (~> 5.5)
   - RealmSwift
   - SDWebImage (~> 4.0)
-  - SwiftSoup (~> 2.0.0)
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
@@ -22,15 +20,13 @@ SPEC REPOS:
     - Realm
     - RealmSwift
     - SDWebImage
-    - SwiftSoup
 
 SPEC CHECKSUMS:
   Alamofire: 1c4fb5369c3fe93d2857c780d8bbe09f06f97e7c
   Realm: f9bc5a212a9ab084b4ed90cda1c28d835a38a06b
   RealmSwift: 0b03bb38001bee4280dcc27709e6b33f438cfad1
   SDWebImage: 783af2c3fa36291a250030c4752ee370a9a51d13
-  SwiftSoup: 4fe21f65cdbfa3a40559047016b7962b88d29279
 
-PODFILE CHECKSUM: c4ffaebb549c3f42a86d20fa32dd568e70782950
+PODFILE CHECKSUM: e71f0519b36fb65f4733fc8e34ed2a0e00d34d97
 
 COCOAPODS: 1.11.2
