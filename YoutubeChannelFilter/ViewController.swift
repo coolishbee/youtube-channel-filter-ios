@@ -21,7 +21,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         let image = UIImage(named: "Logo")
         self.navigationItem.titleView = UIImageView(image: image)
         
-        getYoutubeAPIData(query: "예린몸매") { [weak self] (data: [VideoData]) in
+        getYoutubeAPIData(query: "Unity async await") { [weak self] (data: [VideoData]) in
             self?.refreshTableData(newVids: data)
         }
     }
@@ -60,7 +60,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     ) {
         var videos = [VideoData]()
         
-        YoutubeAPIClient.shared.search(query: "예린몸매") {
+        YoutubeAPIClient.shared.search(query: query) {
             (res: DataResponse<YoutubeSearchResult, AFError>) in
             
             do{
