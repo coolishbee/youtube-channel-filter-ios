@@ -9,11 +9,14 @@ import Foundation
 import UIKit
 
 class NavigationTitleView: UIView {
-    let logoImage = UIImageView()
+    var image : UIImage?
+    var logoImage = UIImageView()
     private var constraintsDidSetup = false
     
     init(frame: CGRect, title: String) {
         super.init(frame: frame)
+        image = UIImage(named: title)
+        logoImage = UIImageView(image: image)
         setup(with: title)
     }
     

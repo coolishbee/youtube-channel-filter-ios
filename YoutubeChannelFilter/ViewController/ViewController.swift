@@ -8,22 +8,34 @@
 import UIKit
 import Alamofire
 import SDWebImage
+import SnapKit
 
 class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate{
 
     @IBOutlet weak var table: UITableView!
-        
+    
     var videoArray = [VideoData]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+                
         let image = UIImage(named: "Logo")
         self.navigationItem.titleView = UIImageView(image: image)
+        //self.navigationItem.titleView = NavigationTitleView(frame: .zero, title: "Logo")
         
-        getYoutubeAPIData(query: "Unity async await") { [weak self] (data: [VideoData]) in
+        getYoutubeAPIData(query: "맨몸운동") { [weak self] (data: [VideoData]) in
             self?.refreshTableData(newVids: data)
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.navigationController?.navigationBar.isHidden = false
+        self.navigationController?.tabBarController?.tabBar.isHidden = false
+    }
+    
+    @IBAction func searchBarBtn(_ sender: Any) {
+        print("searchBarBtn action!!")
+        navigationController?.pushViewController(SearchViewController(), animated: true)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

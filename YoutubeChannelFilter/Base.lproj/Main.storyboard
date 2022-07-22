@@ -53,11 +53,11 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="9Qm-Yt-CSc">
-                        <rightBarButtonItems>
-                            <barButtonItem image="user" id="sdD-es-5bs" userLabel="UserBarBtn"/>
-                            <barButtonItem image="search" id="WKP-nK-ckT" userLabel="SearchBarBtn"/>
-                            <barButtonItem title="CastBarBtn" image="airplayvideo" catalog="system" id="wCw-Lx-8Px"/>
-                        </rightBarButtonItems>
+                        <barButtonItem key="rightBarButtonItem" image="search" id="WKP-nK-ckT" userLabel="SearchBarBtn">
+                            <connections>
+                                <action selector="searchBarBtn:" destination="BYZ-38-t0r" id="8Do-ep-uvq"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="table" destination="0ST-Ir-rFv" id="Gpl-hL-maH"/>
@@ -76,9 +76,6 @@
                         <rect key="frame" x="0.0" y="44" width="390" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
-                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="rLR-E1-UFJ">
-                        <autoresizingMask key="autoresizingMask"/>
-                    </toolbar>
                     <connections>
                         <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="dwQ-Hg-C22"/>
                     </connections>
@@ -89,10 +86,8 @@
         </scene>
     </scenes>
     <resources>
-        <image name="airplayvideo" catalog="system" width="128" height="98"/>
         <image name="house" width="16" height="14"/>
         <image name="search" width="13" height="13"/>
-        <image name="user" width="25" height="25"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
